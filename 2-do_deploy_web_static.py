@@ -4,8 +4,6 @@ Fabric script that distributes an archive
 to your web servers, using the function do_deploy
 """
 import os
-from fabric.api import put
-from fabric.api import run
 from fabric.api import *
 
 
