@@ -1,37 +1,27 @@
 #!/usr/bin/python3
-"""
-Fabric script that distributes an archive
-to your web servers, using the function do_deploy
-"""
-import os
+# module with Fabric script that distributes an archive to server
+
 from fabric.api import *
+import os.path
 
-
+env.user = 'ubuntu'
 env.hosts = ['34.138.242.72', '54.90.243.38']
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to your web servers"""
+    """Fabric script that distrubutes an archive to server"""
     if os.path.exists(archive_path):
-        try:
-            put(archive_path, "/tmp/")
-            filename = archive_path.split('/', 1)
-            no_ext = filename[1].split('.', 1)
-            archive = no_ext[0]
-            run("mkdir -p /data/web_static/releases/" + archive + "/")
-            run("tar -zxf /tmp/" + filename[1] +
-                " -C /data/web_static/releases/" +
-                archive + "/")
-            run("rm /tmp/" + filename[1])
-            run("mv /data/web_static/releases/" + archive +
-                "/web_static/* /data/web_static/releases/" + archive + "/")
-            run("rm -rf /data/web_static/releases/" + archive + "/web_static")
-            run("rm -rf /data/web_static/current")
-            run("ln -s /data/web_static/releases/" + archive +
-                "/ /data/web_static/current")
-            print("New version deployed!")
-            return True
-        except:
-            return False
+        new_path = archive_path.replace('versions/', '')
+        file_name = new_path[:-4]
+        arc_folder = "/data/web_static/releases/{}".format(new_path)
+        put(archive_path, '/tmp/')
+        run('mkdir -p /data/web_static/releases/{}'.format(file_name))
+        run('tar -xzf /tmp/{} -C {}'.format(new_path, arc_folder[:-4]))
+        run('rm /tmp/{}'.format(new_path))
+        run('mv {}/web_static/* {}/'.format(arc_folder[:-4], arc_folder[:-4]))
+        run('rm -rf {}/web_static'.format(arc_folder[:-4]))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {} /data/web_static/current'.format(arc_folder[:-4]))
+        return True
     else:
         return False
