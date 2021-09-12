@@ -35,7 +35,7 @@ def ptythont(text="is cool"):
 @app.route("/number/<n>")
 def number(n):
     """ function to print """
-    if n.isdigit() == True:
+    if n.isdigit() == 1:
         return "{} is a number".format(n)
     else:
         abort(404)
