@@ -69,3 +69,7 @@ class DBStorage:
         Session = scoped_session(new_session)
         self.__session = Session()
 
+    """0x04. AirBnB clone - Web framework - Task 7"""
+    def close(self):
+        """calls close"""
+        self.__session.close()
