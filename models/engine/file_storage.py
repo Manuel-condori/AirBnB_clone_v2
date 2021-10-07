@@ -77,4 +77,4 @@ class FileStorage:
     """0x04. AirBnB clone - Web framework - Task 7"""
     def close(self):
         """deserializes the JSON file to objects"""
-        self.reload()                
+        self.reload()
