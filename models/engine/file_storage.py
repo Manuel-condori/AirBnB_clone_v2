@@ -60,7 +60,7 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
@@ -73,3 +73,8 @@ class FileStorage:
             new_key = key.split('.')
             if new_key[1] == obj.__dict__['id']:
                 del FileStorage.__objects[key]
+
+    """0x04. AirBnB clone - Web framework - Task 7"""
+    def close(self):
+        """deserializes the JSON file to objects"""
+        self.reload()                
